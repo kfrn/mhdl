@@ -5,24 +5,57 @@ from bs4 import BeautifulSoup
 from io import BytesIO
 from urllib.request import urlopen
 from zipfile import ZipFile
+import csv
+import os
 
-def download_mag_issue(url):
+mag_issues = []
+
+data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
+for row in data:
+    mag_issues.append(row[6])
+
+mag_issues = list(set(mag_issues))
+# print(mag_issues)
+
+def download_mag_issue(input):
+
+    # Account for incorrect/missing values
+    if "picture" or "Picture" in input:
+        url = "https://archive.org/details/" + input
+    else:
+        print("Input doesn't contain the relevant string. Exiting")
+        return
+    # print("input", input)
+
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    download_options = soup.find_all(class_='download-pill')
-    proc_jp2_link = download_options[7].get('href')
-    zip_filename = proc_jp2_link.split('/')[-1]
-    filename = zip_filename.split('.')[0]
+    downloads = soup.find_all(class_='download-pill')
+    download_links = []
+    for dlink in downloads:
+        download_links.append(dlink.get('href'))
+    download_links = [x for x in download_links if 'jp2' in x]
 
-    download_url = "https://archive.org" + proc_jp2_link
+    if len(download_links) == 0:
+        print("No relevant results returned. Exiting")
+        return
+    elif len(download_links) == 1:
+        download_path = download_links[0]
+    elif len(download_links) == 2:
+        download_path = download_links[1]
+    else:
+        print("More than two jp2-related downloads? That's odd. You should check that out.")
+        return
 
-    print("Downloading and unzipping %s. Stand by ..." % zip_filename)
+    full_dl_link = "https://archive.org" + download_path
 
-    with urlopen(download_url) as zip_response:
+    print("Downloading and unzipping %s. This will take a while. Stand by ..." % full_dl_link)
+
+    with urlopen(full_dl_link) as zip_response:
         with ZipFile(BytesIO(zip_response.read())) as zfile:
-            zfile.extractall(filename)
+            zfile.extractall('./images/%s_jp2' % input)
 
-    print("Download and extraction of %s complete. Check the %s subfolder." % (zip_filename, filename))
+    print("Download and extraction complete. Check the images/%s_jp2 subfolder." % input)
 
-download_mag_issue("https://archive.org/details/pictureplayweekl01unse")
+# download_mag_issue("Picture-playMagazineJan.1922")
+download_mag_issue("pictureplayweekl01unse")
