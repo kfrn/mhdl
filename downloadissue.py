@@ -2,8 +2,9 @@
 
 import requests
 from bs4 import BeautifulSoup
-import urllib.request
-import shutil
+from io import BytesIO
+from urllib.request import urlopen
+from zipfile import ZipFile
 
 def download_mag_issue(url):
     page = requests.get(url)
@@ -11,14 +12,17 @@ def download_mag_issue(url):
 
     download_options = soup.find_all(class_='download-pill')
     proc_jp2_link = download_options[7].get('href')
-    filename = proc_jp2_link.split('/')[-1]
+    zip_filename = proc_jp2_link.split('/')[-1]
+    filename = zip_filename.split('.')[0]
 
     download_url = "https://archive.org" + proc_jp2_link
 
-    print("Downloading %s. Stand by ..." % filename)
-    # urllib.request.urlretrieve(download_url, filename) # Also works
-    with urllib.request.urlopen(download_url) as response, open(filename, 'wb') as out_file:
-        shutil.copyfileobj(response, out_file)
-    print("Download of %s complete." % filename)
+    print("Downloading and unzipping %s. Stand by ..." % zip_filename)
+
+    with urlopen(download_url) as zip_response:
+        with ZipFile(BytesIO(zip_response.read())) as zfile:
+            zfile.extractall(filename)
+
+    print("Download and extraction of %s complete. Check the %s subfolder." % (zip_filename, filename))
 
 download_mag_issue("https://archive.org/details/pictureplayweekl01unse")
