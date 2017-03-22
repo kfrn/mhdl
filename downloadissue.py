@@ -7,6 +7,7 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 import csv
 import os
+import shutil
 
 # Get the list of issues to download
 mag_issues = []
@@ -75,12 +76,33 @@ issue = "Picture-playMagazineJan.1922"
 download_mag_issue(issue)
 outer_img_path = './images/%s_jp2/' % issue
 
-if (os.path.isdir(outer_img_path)): # Does that path/dir exist
+if not os.path.isdir(outer_img_path): # Does that path/dir exist
+    print("The subfolder %s_jp2 does NOT exist ... nor should it. Exiting")
+else:
     inner_img_folder = os.listdir(outer_img_path)[0] # Get the folder inside
     path_to_imgs = "%s%s" % (outer_img_path, inner_img_folder)
-    print("JP2s are located in %s" % path_to_imgs)
-
+    # print("JP2s are located in %s" % path_to_imgs)
     # Then parse csv. If that issue ID is in column X, copy the file in column y to a new folder.
-    # for image in path_to_imgs ....
-else:
-    print("The subfolder %s_jp2 does NOT exist ... nor should it. Exiting")
+    csv_data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
+    for row in csv_data:
+        vol = row[0]
+        no = row[1]
+        if row[2] != "":
+            day = row[2]
+        else:
+            day = "day"
+        month = row[3]
+        year = row[4]
+        jp2_img = row[7]
+        jp2_filename = jp2_img.split('.')[0]
+        for jp2_img in row:
+            if "jp2" in jp2_img: # and look by issue
+                print("original image is located in", path_to_imgs)
+                print("Original image is", jp2_img)
+                output_filename = jp2_filename + "_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + ".jp2"
+                print("Output filename is", output_filename)
+                print("copying ....")
+                print("file located at %s/%s" % (path_to_imgs, jp2_img))
+                # shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
+            # else:
+                # print("bzzzz. wrong")
