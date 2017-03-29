@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import requests
 from bs4 import BeautifulSoup
 from io import BytesIO
@@ -8,14 +7,14 @@ from zipfile import ZipFile
 import csv
 import os
 import shutil
+import pandas as pd
 
-# Get the list of issues to download
-mag_issues = []
-data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
-for row in data:
-    mag_issues.append(row[6])
-mag_issues = list(set(mag_issues))
-# print(mag_issues)
+def get_issue_list():
+    issues = []
+    data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
+    for row in data:
+        issues.append(row[6])
+    return list(set(issues))
 
 def get_download_page(input):
     # Ignore blanks, header row, and any random values passed as inputs
@@ -95,6 +94,7 @@ def copyRelImageFiles(input):
         if book_id == issue:
             shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
             print("Output file created in the jp2_images directory:", output_filename)
+            # Now ... write the filename to column in the CSV?
 
 
 # TESTING ..... #
@@ -103,6 +103,8 @@ def copyRelImageFiles(input):
 issue = "pictureplayweekl01unse"
 download_mag_issue(issue)
 copyRelImageFiles(issue)
+
+mag_issues = get_issue_list()
 
 # # Actual call
 # for issue in mag_issues:
