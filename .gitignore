@@ -40,5 +40,6 @@ jspm_packages
 *.zip
 
 images/*
+jp2_images/*
 
 *.xlsx

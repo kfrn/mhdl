@@ -80,17 +80,26 @@ def copyRelImageFiles(input):
     # Where the issue name ('issue') matches the entry in the BookID column ...
     csv_data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
     for row in csv_data:
+        vol = row[0]
+        no = row[1]
+        if row[2] != "":
+            day = row[2]
+        else:
+            day = "noday"
+        month = row[3]
+        year = row[4]
         book_id = row[6]
-        jp2 = row[7]
+        jp2_img = row[7]
+        output_filename = "Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + ".jp2"
         if book_id == issue:
-            print(jp2)
-
+            shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
+            print("Output file created in the jp2_images directory:", output_filename)
 
 
 # TESTING ..... #
-# issue = "Picture-playMagazineJan.1922"
+issue = "Picture-playMagazineJan.1922"
 # issue = "obviously-fake"
-issue = "pictureplayweekl01unse"
+# issue = "pictureplayweekl01unse"
 download_mag_issue(issue)
 copyRelImageFiles(issue)
 
