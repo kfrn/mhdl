@@ -39,7 +39,10 @@ jspm_packages
 # Zipped files
 *.zip
 
+# Image files
 images/*
 jp2_images/*
+jpeg_derivatives/*
 
+# Original spreadsheet(s)
 *.xlsx
