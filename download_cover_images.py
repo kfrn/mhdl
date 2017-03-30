@@ -7,7 +7,6 @@ from zipfile import ZipFile
 import csv
 import os
 import shutil
-# import pandas as pd
 
 def get_issue_list():
     issues = []
@@ -17,7 +16,6 @@ def get_issue_list():
     return list(set(issues))
 
 def get_download_page(input):
-    # Ignore blanks, header row, and any random values passed as inputs
     if "picture" in input or "Picture" in input:
         return "https://archive.org/details/" + input
     else:
@@ -60,7 +58,7 @@ def download_mag_issue(input):
         return
 
     print("Downloading and unzipping %s. This will take a while. Stand by ..." % full_dl_path)
-    # unzip_folder(full_dl_path, input)
+    unzip_folder(full_dl_path, input)
 
 
 def does_imgfolder_exist(img_path):
@@ -80,7 +78,6 @@ def copyRelImageFiles(input):
     print(path_to_imgs)
 
     csv_data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
-    new_csv = csv.writer(open('./data/pictureplay_data_jp2s.csv', 'w'))
     for row in csv_data:
         vol = row[0]
         no = row[1]
@@ -96,11 +93,6 @@ def copyRelImageFiles(input):
         if book_id == issue:
             shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
             print("Output file created in the jp2_images directory:", output_filename)
-            row.append(output_filename)
-            new_csv.writerow(row)
-        else:
-            new_csv.writerow(row)
-
 
 # TESTING ..... #
 # issue = "Picture-playMagazineJan.1922"
