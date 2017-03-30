@@ -43,6 +43,9 @@ jspm_packages
 images/*
 jp2_images/*
 jpeg_derivatives/*
+png_derivatives/*
+Picture*
+output.png
 
 # Original spreadsheet(s)
 *.xlsx
