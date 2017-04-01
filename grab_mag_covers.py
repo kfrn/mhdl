@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import shutil
 import os
+import csv
 
 from get_issue_list import get_issue_list
 
@@ -33,17 +34,17 @@ def copyRelImageFiles(input):
         jp2_img = row[7]
         output_filename = "Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + ".jp2"
         if book_id == input:
-            # Account for cases where there is no book cover
-            # TODO!: account for blanks in the jp2_img field.
-            if not "picture" in jp2_img.lower():
-                print("Book id is %s and filename field contains: %s" % (book_id, jp2_img))
-                return
-            else:
+            if not jp2_img:
+                print("No cover image specified for this issue.")
+            elif "missing" in jp2_img.lower():
+                print("Cover page missing for this issue.")
+            elif "jp2" in jp2_img:
                 shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
-                print("Output file created in the jp2_images directory:", output_filename)
+                print("Output file created: jp2_images/%s" % output_filename)
+            else:
+                print("Cover is not missing, not a jp2, and column is not blank. Something else is written here, you should check it out.")
 
 mag_issues = get_issue_list()
-# print(mag_issues)
 
-# for issue in mag_issues:
-#     copyRelImageFiles(issue)
+for issue in mag_issues:
+    copyRelImageFiles(issue)
