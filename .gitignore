@@ -49,3 +49,6 @@ output.png
 
 # Original spreadsheet(s)
 *.xlsx
+
+# pycache
+__pycache__
