@@ -11,9 +11,12 @@ import shutil
 def get_issue_list():
     issues = []
     data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
+    next(data)
     for row in data:
         issues.append(row[6])
-    return list(set(issues))
+    uniques = list(set(issues))
+    uniques.remove('')
+    return uniques
 
 def get_download_page(input):
     if "picture" in input or "Picture" in input:
@@ -36,8 +39,8 @@ def get_download_path(links):
 def unzip_folder(path_to_folder, input):
     with urlopen(path_to_folder) as zip_response:
         with ZipFile(BytesIO(zip_response.read())) as zfile:
-            zfile.extractall('./images/%s_jp2' % input)
-    print("Download and extraction complete. Check the images/%s_jp2 subfolder." % input)
+            zfile.extractall('./issue_downloads/%s_jp2' % input)
+    print("Download and extraction complete. Check the issue_downloads/%s_jp2 subfolder." % input)
 
 def download_mag_issue(input):
     url = get_download_page(input)
@@ -68,14 +71,13 @@ def get_path_to_imgs(outer_folder):
     return outer_folder + os.listdir(outer_folder)[0]
 
 def copyRelImageFiles(input):
-    outer_img_folder = './images/%s_jp2/' % issue
+    outer_img_folder = './issue_downloads/%s_jp2/' % input
 
     if not does_imgfolder_exist(outer_img_folder):
         print("There's no image folder related to that issue. Exiting")
         return
 
     path_to_imgs = get_path_to_imgs(outer_img_folder)
-    print(path_to_imgs)
 
     csv_data = csv.reader(open('./data/pictureplay_data.csv', 'r'))
     for row in csv_data:
@@ -84,26 +86,25 @@ def copyRelImageFiles(input):
         if row[2] != "":
             day = row[2]
         else:
-            day = "noday"
+            day = "dd"
         month = row[3]
         year = row[4]
         book_id = row[6]
         jp2_img = row[7]
         output_filename = "Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + ".jp2"
-        if book_id == issue:
-            shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
-            print("Output file created in the jp2_images directory:", output_filename)
-
-# TESTING ..... #
-# issue = "Picture-playMagazineJan.1922"
-# issue = "obviously-fake"
-issue = "pictureplayweekl01unse"
-# download_mag_issue(issue)
-copyRelImageFiles(issue)
+        if book_id == input:
+            # Account for cases where there is no book cover
+            if not "picture" in jp2_img.lower():
+                print("Book id is %s and filename field contains: %s" % (book_id, jp2_img))
+                return
+            else:
+                shutil.copy2("%s/%s" % (path_to_imgs, jp2_img), "./jp2_images/%s" % output_filename)
+                print("Output file created in the jp2_images directory:", output_filename)
 
 mag_issues = get_issue_list()
 
-# # Actual call
 # for issue in mag_issues:
 #     download_mag_issue(issue)
-#     copyRelImageFiles(issue)
+
+for issue in mag_issues:
+    copyRelImageFiles(issue)

@@ -40,7 +40,7 @@ jspm_packages
 *.zip
 
 # Image files
-images/*
+issue_downloads/*
 jp2_images/*
 jpeg_derivatives/*
 png_derivatives/*
