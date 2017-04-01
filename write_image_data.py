@@ -11,13 +11,13 @@ def write_image_data():
         if row[2] != "":
             day = row[2]
         else:
-            day = "noday"
+            day = "dd"
         month = row[3]
         year = row[4]
         book_id = row[6]
         jp2_img = row[7]
         jp2_filename = "jp2_images/Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + ".jp2"
-        output_filename = "jp2_images/Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year
+        output_filename = "Picture-Play_vol" + vol + "_no" + no + "_" + day + "-" + month + "-" + year + "_sml.png"
         if os.path.isfile(jp2_filename):
             print("%s exists!" % jp2_filename)
             row.append(output_filename)
