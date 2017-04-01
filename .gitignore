@@ -40,15 +40,15 @@ jspm_packages
 *.zip
 
 # Image files
-issue_downloads/*
-jp2_images/*
-jpeg_derivatives/*
-png_derivatives/*
+# issue_downloads/*
+jp2_images/*.jp2
+png_derivatives/*.png
 Picture*
 output.png
+temp/
 
 # Original spreadsheet(s)
-*.xlsx
+# *.xlsx
 
 # pycache
 __pycache__
