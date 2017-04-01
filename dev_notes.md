@@ -2,20 +2,22 @@
 
 1. Create subfolders: `mkdir issue_downloads jp2_images png_derivatives`.
 
-2. `download_mag_volumes.py` downloads the file of images (jp2) for each volume and unzips the folder.   
+2. `download_mag_volumes.py` downloads the folder of jp2 images for each volume and unzips the folder.   
    * `python3 download_mag_volumes.py`   
 
 3. `grab_mag_covers.py` copies just the cover images to <i>jp2_images</i>.
    * `python3 grab_mag_covers.py`
 
-4. `jp2_to_png.sh` converts the jp2s to pngs and resizes them to 300w. Then moves them to the folder <i>png_derivatives</i>.
+4. `jp2_to_png.sh` converts the jp2s to pngs and resizes them to 300w, then moves them to the folder <i>png_derivatives</i>.
    * `chmod +x jp2_to_png.sh`
    * `./jp2_to_png.sh`  
 
 5. `write_image_data.py` writes the png filename into the CSV data file `data/picture_data_imagefiles.csv`.
    * `python3 write_image_data.py`  
 
-6. Check `picture_data_imagefiles.csv` that there are no gaps where there shouldn't be.
+Suggested:
+
+6. Check `picture_data_imagefiles.csv` for gaps where there shouldn't be.
 
 7. Cleanup - if everything looks good, delete the contents of <i>image_downloads</i>: `rm -rf issue_downloads/*`.
 
