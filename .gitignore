@@ -41,6 +41,7 @@ jspm_packages
 
 # Image files
 issue_downloads/*
+jpg_derivatives/*
 jp2_images/*.jp2
 png_derivatives/*.png
 Picture*
@@ -52,3 +53,6 @@ Original spreadsheet(s)
 
 # pycache
 __pycache__
+
+# PNG to JPEG step ...
+png_to_jpg.sh
