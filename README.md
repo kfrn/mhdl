@@ -6,8 +6,8 @@ This process is reliant on CSV data supplied, which gives the cover filenames et
 
 #### Dependencies
 
-`imagemagick` - command line image manipulation program.
-`BeautifulSoup` - Python library for parsing HTML.
+* `imagemagick` - command line image manipulation program.
+* `BeautifulSoup` - Python library for parsing HTML.
 
 #### How to use
 
@@ -15,4 +15,4 @@ Instructions [here](./dev_notes.md).
 
 ##### Thinking out loud ...
 
-* Is it possible download only selected files from a zip file? It doesn't seem that there is, but this would be great - very lengthy and disk heavy to download all of the volume zip files. 
+* Is it possible download only selected files from a zip file? It doesn't seem that there is, but this would be great - it's very lengthy and disk heavy to download all of the zip files.
