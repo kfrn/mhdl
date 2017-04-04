@@ -13,6 +13,11 @@ This process is reliant on CSV data supplied, which gives the cover filenames et
 
 Instructions [here](./dev_notes.md).
 
-##### Thinking out loud ...
+#### ⚠ Note
+
+This is a proof-of-concept type thing, scripts currently work for gaining the images for _Picture Play_ magazine.  
+However, could quite easily be amended to work for other titles.
+
+##### Questions
 
 * Is it possible download only selected files from a zip file? It doesn't seem that there is, but this would be great - it's very lengthy and disk heavy to download all of the zip files.
