@@ -1,8 +1,8 @@
 ### mhdl-scripts
 
 Scripts for working with media history magazines from the [Media History Digital Library](http://mediahistoryproject.org/), hosted on the internet archive.  
-This series of scripts downloads all issues of a particular magazine, extracts the zip files, copies from each all of the jp2 images that correspond to a magazine cover, and converts these images to jp2.  
-This process is reliant on CSV data supplied, which gives the cover filenames etc. At the end, a new CSV is output which also lists the names of the jpeg derivatives.
+This series of scripts downloads all issues of a particular magazine, extracts the zip files, copies the magazine cover images (JPEG2000), and converts these images to JPEG.  
+This process uses data that has been collected on volume IDs, the cover filenames, the link to that page in the book reader, etc. At the end, a new CSV is output which adds the names of the jpeg derivatives to the existing data.
 
 #### Dependencies
 
